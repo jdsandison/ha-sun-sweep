@@ -27,6 +27,14 @@ row_config = {
     "row6_atrium":{"center":85, "width":32, "max":100},
 }
 
+master_config: dict[str, dict[str, dict[str, int]|list[str]]] = {"row1_tw": {"dim": {"center":30, "width":20, "max":85}, "entity": ["light.slope_spot", "light.music_corner"]},
+                 "row2_rgb": {"dim": {"center":40, "width":22, "max":85}, "entity": ["light.towards_slope", "light.foot_stool"]},
+                 "row3_rgb": {"dim": {"center":50, "width":24, "max":90}, "entity": ["light.burner", "light.axel"]},
+                 "row4_tw": {"dim": {"center":60, "width":28, "max":85}, "entity": ["light.reading_light", "light.music_stand"]},
+                 "row5_tw": {"dim": {"center":70, "width":30, "max":95}, "entity": ["light.breakfast_bar"]},
+                 "row6_atrium_tw": {"dim": {"center":85, "width":32, "max":100}, "entity": ["light.table_uplight_white", "light.table_downlight_white"]},
+                 "row6_atrium_rgb": {"dim":{"center":85, "width":32, "max":100}, "entity": ["light.table_uplight_colour", "light.table_downlight_colour"]}}
+
 # --- Helpers -------------------------------------------------------------
 def clamp(v,a,b): return max(a,min(b,v))
 def lerp(a,b,t): return a+(b-a)*t
