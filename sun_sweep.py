@@ -2,6 +2,7 @@
 
 import random
 import time
+from datetime import datetime
 
 
 # Expects:
@@ -295,21 +296,30 @@ def colour_selection() -> tuple:
 
 def boo_dinner_lights(valid_entity_group_list: list[str], time_length: int) -> None:
     for _ in range(time_length):
+        batch_list = []
         for loc_key in valid_entity_group_list:
-            entity_list = master_config[loc_key]["entity"]
-            for ent in entity_list:
-                # need to consider asynchronous nature?
-                hass.services.call(
-                    "light",
-                    "turn_on",
-                    {
-                        "entity_id": ent,
-                        "brightness_pct": 100,
-                        "rgb_color": colour_selection(),
-                        "transition": transition_fast,
-                    },
-                )
+            batch_list.extend(master_config[loc_key]["entity"])
+        entity_colour_map = {entity: colour_selection() for entity in batch_list}
+        
+        for entity, colour in entity_colour_map.items():
+            hass.services.call(
+            "light",
+            "turn_on",
+            {
+                "entity_id": entity,
+                "brightness_pct": 100,
+                "rgb_color": colour,
+                "transition": transition_fast,
+            },
+        )
+            
         time.sleep(1)
+
+if datetime.now().hour == 12 and datetime.now().minute == 0:
+    boo_dinner_lights(valid_entity_group_list=valid_entity_group_list, time_length=10)
+    time.sleep(60)
+    
+
 
 
 # --- Debug ---------------------------------------------------------------
